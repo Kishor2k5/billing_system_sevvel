@@ -5,20 +5,10 @@ import settingsIcon from '../image/icons/settings.svg';
 import './Parties.css';
 import PartyDrawer from '../components/PartyDrawer';
 import CustomerHistoryDrawer from '../components/CustomerHistoryDrawer';
+import API from '../api';
 
 /* parties loaded from API */
 const partiesList = [];
-
-// Resolve API base URL like other pages (prefer Vite env var)
-let API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-try {
-  const currentHost = window.location.host;
-  if (!API_BASE_URL || API_BASE_URL.includes(currentHost)) {
-    API_BASE_URL = 'http://localhost:5000';
-  }
-} catch (e) {
-  API_BASE_URL = API_BASE_URL || 'http://localhost:5000';
-}
 
 /* Summary cards values are computed from loaded parties (see inside component) */
 
@@ -77,9 +67,7 @@ export default function Parties() {
       setIsLoading(true);
       setLoadError('');
       try {
-        const res = await fetch(`${API_BASE_URL}/api/parties`);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Failed to load parties');
+        const { data } = await API.get('/parties');
         if (mounted) setParties(Array.isArray(data.parties) ? data.parties : []);
       } catch (err) {
         console.error('Failed to load parties', err);
@@ -108,9 +96,7 @@ export default function Parties() {
     setIsLoading(true);
     setLoadError('');
     try {
-      const res = await fetch(`${API_BASE_URL}/api/parties`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to load parties');
+      const { data } = await API.get('/parties');
       setParties(Array.isArray(data.parties) ? data.parties : []);
     } catch (err) {
       console.error('Failed to load parties', err);
@@ -143,13 +129,7 @@ export default function Parties() {
     if (!selectedParty) return;
     setIsDeleting(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/parties/${selectedParty.partyId}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || 'Failed to delete customer');
-      }
+      await API.delete(`/parties/${selectedParty.partyId}`);
       setShowDeleteModal(false);
       fetchParties();
     } catch (err) {
@@ -165,11 +145,7 @@ export default function Parties() {
 
     setIsLoading(true);
     try {
-      await Promise.all(
-        selectedParties.map((id) =>
-          fetch(`${API_BASE_URL}/api/parties/${id}`, { method: 'DELETE' })
-        )
-      );
+      await Promise.all(selectedParties.map((id) => API.delete(`/parties/${id}`)));
       setSelectedParties([]);
       fetchParties();
     } catch (err) {

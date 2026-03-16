@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import logo from '../image/logo.png';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+import API from '../api';
 
 function Login() {
   const navigate = useNavigate();
@@ -27,28 +26,17 @@ function Login() {
     setErrorMessage('');
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email.trim(),
-          password: formData.password,
-        }),
+      const { data } = await API.post('/auth/login', {
+        email: formData.email.trim(),
+        password: formData.password,
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setErrorMessage(data.message || 'Invalid email or password');
-        return;
-      }
 
       localStorage.setItem('user', JSON.stringify(data.user));
       navigate('/home');
     } catch (error) {
-      setErrorMessage('Unable to reach the server. Please try again.');
+      const message =
+        error?.response?.data?.message || 'Unable to reach the server. Please try again.';
+      setErrorMessage(message);
     } finally {
       setIsSubmitting(false);
     }
