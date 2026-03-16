@@ -9,6 +9,7 @@ import stockBoxIcon from '../image/icons/stock-box.svg';
 import lowStockIcon from '../image/icons/low-stock.svg';
 import outOfStockIcon from '../image/icons/out-of-stock.svg';
 import './Items_ERP.css';
+import API, { API_ROOT } from '../api';
 
 // Utility functions
 const formatCurrency = (value) => {
@@ -47,7 +48,7 @@ const getItemUnitCost = (item) => {
 };
 
 // Stock History Modal Component
-const StockHistoryModal = ({ open, item, onClose, apiUrl }) => {
+const StockHistoryModal = ({ open, item, onClose }) => {
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,15 +63,7 @@ const StockHistoryModal = ({ open, item, onClose, apiUrl }) => {
     setIsLoading(true);
     try {
       const itemId = item.itemId ?? item.productId ?? item.id ?? item._id;
-      const response = await fetch(`${apiUrl}/api/items/${itemId}/stock-transactions`);
-      let data;
-      try {
-        data = await response.json();
-      } catch (parseErr) {
-        console.error('Failed to parse history response:', parseErr);
-        setTransactions([]);
-        return;
-      }
+      const { data } = await API.get(`/items/${itemId}/stock-transactions`);
       setTransactions(data.transactions || []);
     } catch (err) {
       console.error('Failed to load stock history:', err);
@@ -144,16 +137,6 @@ function Items() {
   const [historyItem, setHistoryItem] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const navigate = useNavigate();
-  let API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-  try {
-    const currentHost = window.location.host;
-    if (!API_BASE_URL || API_BASE_URL.includes(currentHost)) {
-      API_BASE_URL = 'http://localhost:5000';
-    }
-  } catch (e) {
-    API_BASE_URL = 'http://localhost:5000';
-  }
-
   const location = useLocation();
 
   // Fetch items from backend
@@ -161,9 +144,7 @@ function Items() {
     setIsLoading(true);
     setLoadError('');
     try {
-      const response = await fetch(`${API_BASE_URL}/api/items`);
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Unable to load items');
+      const { data } = await API.get('/items');
       setItems(Array.isArray(data.items) ? data.items : []);
     } catch (error) {
       console.error('Failed to load items', error);
@@ -172,7 +153,7 @@ function Items() {
     } finally {
       setIsLoading(false);
     }
-  }, [API_BASE_URL]);
+  }, []);
 
   // Edit item
   const handleEditItem = (item) => {
@@ -186,13 +167,7 @@ function Items() {
     const id = editingItem.itemId ?? editingItem.id ?? editingItem._id;
     setUpdatingItemId(id);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/items/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedFields),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to update item');
+      const { data } = await API.patch(`/items/${id}`, updatedFields);
       const updatedItem = data.item || { ...editingItem, ...updatedFields };
       setItems((prev) => prev.map((it) => (it.itemId ?? it.id ?? it._id) === id ? updatedItem : it));
       showToast('Product updated successfully', 'success');
@@ -209,9 +184,7 @@ function Items() {
   const handleDeleteItem = async (itemId) => {
     if (!itemId) return;
     try {
-      const res = await fetch(`${API_BASE_URL}/api/items/${itemId}`, { method: 'DELETE' });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to delete item');
+      const { data } = await API.delete(`/items/${itemId}`);
       setItems((prev) => prev.filter((it) => (it.itemId ?? it.id ?? it._id) !== itemId));
       showToast('Item moved to recycle bin', 'success');
       setDeleteConfirm(null);
@@ -225,13 +198,7 @@ function Items() {
   const handleBulkDelete = async () => {
     if (selectedIds.length === 0) return;
     try {
-      const res = await fetch(`${API_BASE_URL}/api/items/bulk-delete`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ itemIds: selectedIds }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to delete items');
+      const { data } = await API.post('/items/bulk-delete', { itemIds: selectedIds });
       setItems((prev) => prev.filter((it) => !selectedIds.includes(it.itemId ?? it.id ?? it._id)));
       setSelectedIds([]);
       showToast(`${selectedIds.length} items moved to recycle bin`, 'success');
@@ -604,7 +571,6 @@ function Items() {
         open={!!historyItem}
         item={historyItem}
         onClose={() => setHistoryItem(null)}
-        apiUrl={API_BASE_URL}
       />
 
       <EditItemModal
