@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tax Invoice</title>
+  <style>
+    @page { size: A4; margin: 8mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #000; background: #fff; }
+    .page { width: 100%; padding: 10mm; }
+    
+    /* Header */
+    .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #0b8a3d; padding-bottom: 10px; margin-bottom: 10px; }
+    .logo-section { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 60px; height: 60px; border-radius: 50%; background: #0b8a3d; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 24px; }
+    .company-info { line-height: 1.4; }
+    .company-name { font-size: 20px; font-weight: 800; color: #0b8a3d; margin-bottom: 4px; }
+    .company-details { font-size: 11px; color: #333; }
+    .invoice-box { border: 2px solid #0b8a3d; padding: 8px 12px; min-width: 220px; }
+    .invoice-box table { width: 100%; }
+    .invoice-box td { padding: 3px 0; font-size: 11px; }
+    .inv-label { font-weight: 700; width: 55%; }
+    .inv-value { text-align: right; font-weight: 600; }
+    
+    /* Title */
+    .title { text-align: center; margin: 12px 0; font-size: 18px; font-weight: 800; letter-spacing: 2px; }
+    
+    /* Party details */
+    .parties { display: flex; gap: 12px; margin: 12px 0; }
+    .party-box { flex: 1; border: 1px solid #ddd; padding: 10px; background: #f9fafb; }
+    .party-title { font-weight: 700; margin-bottom: 6px; font-size: 13px; color: #0b8a3d; }
+    .party-name { font-weight: 700; margin-bottom: 4px; }
+    .party-details { font-size: 11px; line-height: 1.6; color: #555; }
+    
+    /* Items table */
+    .items-table { margin: 12px 0; border: 1px solid #000; }
+    .items-table table { width: 100%; border-collapse: collapse; }
+    .items-table th { background: #0b8a3d; color: #fff; font-weight: 700; text-align: center; padding: 8px 5px; border: 1px solid #0b8a3d; font-size: 11px; }
+    .items-table td { border: 1px solid #ddd; padding: 6px 5px; font-size: 11px; }
+    .text-center { text-align: center; }
+    .text-right { text-align: right; font-family: 'Courier New', monospace; }
+    .items-table tbody tr:nth-child(even) { background: #f9f9f9; }
+    
+    /* Summary */
+    .summary { display: flex; justify-content: space-between; margin: 12px 0; gap: 12px; }
+    .amount-words { flex: 1; border: 1px solid #ddd; padding: 10px; background: #f9fafb; font-size: 11px; }
+    .summary-table { border: 1px solid #ddd; min-width: 300px; }
+    .summary-table table { width: 100%; border-collapse: collapse; }
+   .summary-table td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; font-size: 11px; }
+    .summary-table .label { text-align: left; font-weight: 600; }
+    .summary-table .value { text-align: right; font-family: 'Courier New', monospace; font-weight: 700; }
+    .summary-table .total-row { background: #0b8a3d; color: #fff; }
+    .summary-table .total-row td { border: none; font-weight: 800; font-size: 12px; }
+    
+    /* Footer */
+    .footer { display: flex; justify-content: space-between; margin-top: 12px; gap: 12px; }
+    .bank-box, .terms-box { flex: 1; border: 1px solid #ddd; padding: 10px; background: #f9fafb; }
+    .section-title { font-weight: 700; margin-bottom: 6px; font-size: 12px; color: #0b8a3d; border-bottom: 1px solid #ddd; padding-bottom: 3px; }
+    .bank-box div, .terms-box li { font-size: 11px; margin: 3px 0; color: #555; }
+    .terms-box ol { padding-left: 18px; }
+    
+    /* Signature */
+    .signature { display: flex; justify-content: flex-end; margin-top: 20px; }
+    .signature-box { text-align: center; min-width: 200px; }
+    .sig-line { height: 60px; border-bottom: 1px solid #000; margin-bottom: 6px; }
+    .sig-text { font-size: 11px; font-weight: 700; }
+    
+    @media print {
+      body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-section">
+        <div class="logo">SG</div>
+        <div class="company-info">
+          <div class="company-name">%%COMPANY_NAME%%</div>
+          <div class="company-details">%%COMPANY_ADDRESS%%</div>
+          <div class="company-details">Mobile: %%COMPANY_MOBILE%%</div>
+          <div class="company-details">GSTIN: %%COMPANY_GST%% | PAN: %%COMPANY_PAN%%</div>
+        </div>
+      </div>
+      <div class="invoice-box">
+        <table>
+          <tr><td class="inv-label">Invoice No.</td><td class="inv-value">%%INVOICE_NUMBER%%</td></tr>
+          <tr><td class="inv-label">Invoice Date</td><td class="inv-value">%%INVOICE_DATE%%</td></tr>
+          <tr><td class="inv-label">Due Date</td><td class="inv-value">%%DUE_DATE%%</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="title">TAX INVOICE</div>
+
+    <!-- Parties -->
+    <div class="parties">
+      <div class="party-box">
+        <div class="party-title">BILL TO</div>
+        <div class="party-name">%%CUSTOMER_NAME%%</div>
+        <div class="party-details">%%CUSTOMER_ADDRESS%%</div>
+        <div class="party-details">%%CUSTOMER_CITY_STATE%%</div>
+        <div class="party-details">GSTIN: %%CUSTOMER_GSTIN%%</div>
+      </div>
+      <div class="party-box">
+        <div class="party-title">SHIP TO</div>
+        <div class="party-name">%%SHIP_NAME%%</div>
+        <div class="party-details">%%SHIP_ADDRESS%%</div>
+        <div class="party-details">%%SHIP_CITY_STATE%%</div>
+      </div>
+    </div>
+
+    <!-- Items -->
+    <div class="items-table">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 40px;">S.NO</th>
+            <th>ITEMS</th>
+            <th style="width: 70px;">HSN/SAC</th>
+            <th style="width: 50px;">QTY.</th>
+            <th style="width: 50px;">UNIT</th>
+            <th style="width: 85px;">RATE</th>
+            <th style="width: 100px;">TAXABLE AMT</th>
+            <th style="width: 95px;">TAX</th>
+            <th style="width: 105px;">AMOUNT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ITEMS_PLACEHOLDER -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+      <div class="amount-words">
+        <strong>Total Amount (in words):</strong><br><br>
+        %%AMOUNT_IN_WORDS%%
+      </div>
+      <div class="summary-table">
+        <table>
+          <tr><td class="label">Taxable Amount</td><td class="value">₹ %%TAXABLE_AMOUNT%%</td></tr>
+          <tr><td class="label">CGST (9%)</td><td class="value">₹ %%CGST_AMOUNT%%</td></tr>
+          <tr><td class="label">SGST (9%)</td><td class="value">₹ %%SGST_AMOUNT%%</td></tr>
+          <tr class="total-row"><td class="label">Total Amount</td><td class="value">₹ %%TOTAL_AMOUNT%%</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="bank-box">
+        <div class="section-title">BANK DETAILS</div>
+        <div><strong>Account Holder:</strong> Sevvel Garments</div>
+        <div><strong>Bank:</strong> Example Bank</div>
+        <div><strong>Account No:</strong> 1234567890</div>
+        <div><strong>IFSC:</strong> EXAM0000123</div>
+        <div><strong>Branch:</strong> Tiruppur</div>
+      </div>
+      <div class="terms-box">
+        <div class="section-title">TERMS & CONDITIONS</div>
+        <ol>
+          <li>Goods once sold will not be taken back or exchanged</li>
+          <li>All disputes are subject to Tiruppur jurisdiction only</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Signature -->
+    <div class="signature">
+      <div class="signature-box">
+        <div class="sig-line"></div>
+        <div class="sig-text">AUTHORISED SIGNATORY<br>FOR SEVVEL GARMENTS</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px; text-align: center; font-size: 11px; font-weight: 700;">
+      TAX INVOICE – ORIGINAL FOR RECIPIENT
+    </div>
+  </div>
+</body>
+</html>

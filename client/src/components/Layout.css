@@ -1,0 +1,15 @@
+/* Layout grid with left sidebar, central content, and right persistent panel */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+  background: #eef1f8;
+  color: #0f172a;
+}
+
+.dashboard-main {
+  padding: 1.25rem;
+  overflow: auto;
+}
+
+/* Right panel removed — related styles trimmed */

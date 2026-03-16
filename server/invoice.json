@@ -1,0 +1,1 @@
+{"invoiceNumber":"INV-TEST-1234","invoiceDate":"2026-01-02","partyName":"Test Supplier","paymentTerms":"immediate","items":[{"itemName":"Test Item","quantity":2,"price":100,"amount":200}]}

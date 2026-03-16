@@ -1,0 +1,12 @@
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.32);backdrop-filter:blur(3px);z-index:1200;display:flex;justify-content:flex-end}
+.drawer{width:36%;max-width:520px;background:#fff;height:100vh;box-shadow:-10px 0 30px rgba(2,6,23,0.2);padding:18px;overflow:auto}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.drawer-header h3{margin:0}
+.drawer-form{display:flex;flex-direction:column;gap:10px}
+.drawer-form label{font-size:13px;color:#374151}
+.drawer-form input,.drawer-form textarea{padding:8px;border-radius:6px;border:1px solid #e5e7eb}
+.drawer-form textarea{min-height:80px}
+.drawer-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.drawer .close{background:transparent;border:0;font-size:18px;cursor:pointer}
+.error{color:#b91c1c;font-size:12px}
+@media(max-width:720px){.drawer{width:100%;max-width:100%}}

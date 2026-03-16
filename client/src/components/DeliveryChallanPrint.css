@@ -1,0 +1,323 @@
+.dc-print-wrapper {
+  background: #ffffff;
+  width: 210mm;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+}
+
+.dc-print-container {
+  padding: 10mm;
+  background: #e8f5e9;
+  border: 2px solid #2e7d32;
+}
+
+/* Header */
+.dc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  background: #ffffff;
+  border: 2px solid #a5d6a7;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.dc-header-left {
+  flex: 0 0 auto;
+}
+
+.dc-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.dc-header-right {
+  flex: 1;
+  text-align: right;
+}
+
+.dc-company-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1b5e20;
+  margin: 0 0 0.5rem 0;
+}
+
+.dc-company-info {
+  font-size: 0.9rem;
+  color: #424242;
+  margin: 0.2rem 0;
+}
+
+/* Title Section */
+.dc-title-section {
+  text-align: center;
+  padding: 1rem;
+  background: #2e7d32;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+.dc-title-section h2 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+/* Info Grid */
+.dc-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f1f8e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.dc-info-item {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dc-label {
+  font-weight: 600;
+  color: #1b5e20;
+}
+
+.dc-value {
+  color: #424242;
+}
+
+/* Customer Section */
+.dc-customer-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dc-customer-box {
+  padding: 1rem;
+  background: #ffffff;
+  border: 2px solid #a5d6a7;
+  border-radius: 4px;
+}
+
+.dc-customer-box h3 {
+  font-size: 1rem;
+  color: #1b5e20;
+  margin: 0 0 0.5rem 0;
+  border-bottom: 2px solid #a5d6a7;
+  padding-bottom: 0.3rem;
+}
+
+.dc-customer-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #1b5e20;
+  margin: 0.5rem 0;
+}
+
+.dc-customer-box p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  color: #424242;
+}
+
+.dc-address {
+  color: #616161;
+  line-height: 1.5;
+}
+
+/* Items Table */
+.dc-items-section {
+  margin-bottom: 1rem;
+}
+
+.dc-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 2px solid #a5d6a7;
+}
+
+.dc-items-table thead {
+  background: #2e7d32;
+  color: #ffffff;
+}
+
+.dc-items-table th {
+  padding: 0.7rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid #1b5e20;
+}
+
+.dc-items-table tbody td {
+  padding: 0.6rem;
+  border: 1px solid #a5d6a7;
+  font-size: 0.9rem;
+  color: #424242;
+}
+
+.dc-items-table tbody tr:nth-child(even) {
+  background: #f1f8e9;
+}
+
+.dc-empty-row td {
+  height: 2rem;
+  border-color: #e0e0e0 !important;
+}
+
+.dc-items-table tfoot {
+  background: #e8f5e9;
+}
+
+.dc-total-row td {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 2px solid #2e7d32;
+  color: #1b5e20;
+}
+
+.dc-center {
+  text-align: center;
+}
+
+.dc-right {
+  text-align: right;
+}
+
+/* Remarks */
+.dc-remarks-section {
+  padding: 1rem;
+  background: #f1f8e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.dc-remarks-section h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1b5e20;
+  font-size: 1rem;
+}
+
+.dc-remarks-section p {
+  margin: 0;
+  color: #424242;
+  font-size: 0.9rem;
+}
+
+/* Terms */
+.dc-terms-section {
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #a5d6a7;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.dc-terms-section h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1b5e20;
+  font-size: 1rem;
+}
+
+.dc-terms-section ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #424242;
+  font-size: 0.85rem;
+}
+
+.dc-terms-section li {
+  margin: 0.3rem 0;
+}
+
+/* Signature Section */
+.dc-signature-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.dc-signature-box {
+  text-align: center;
+}
+
+.dc-signature-label {
+  font-size: 0.9rem;
+  color: #1b5e20;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.dc-signature-line {
+  border-bottom: 2px solid #2e7d32;
+  margin: 2rem 1rem 0.5rem 1rem;
+}
+
+.dc-signature-text {
+  font-size: 0.85rem;
+  color: #616161;
+  margin: 0;
+}
+
+/* Footer */
+.dc-footer {
+  text-align: center;
+  padding: 1rem;
+  background: #2e7d32;
+  color: #ffffff;
+  border-radius: 4px;
+}
+
+.dc-footer p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.dc-footer-note {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #e8f5e9;
+}
+
+/* Print Styles */
+@media print {
+  .dc-print-wrapper {
+    width: 210mm;
+    margin: 0;
+  }
+
+  .dc-print-container {
+    padding: 8mm;
+  }
+
+  .dc-logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .dc-company-name {
+    font-size: 1.6rem;
+  }
+
+  .dc-title-section h2 {
+    font-size: 1.3rem;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

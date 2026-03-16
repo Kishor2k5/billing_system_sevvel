@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Items / Add</title>
+	<link rel="stylesheet" href="../assets/css/items.css" />
+</head>
+<body>
+	<div class="app-shell">
+		<!-- LEFT NAV -->
+		<nav class="left-nav" aria-label="Main Navigation">
+			<div class="brand">MyBillBook</div>
+			<ul class="nav-list">
+				<li class="nav-item">Dashboard</li>
+				<li class="nav-item">Sales</li>
+				<li class="nav-item active">Items</li>
+				<li class="nav-item">Customers</li>
+				<li class="nav-item">Reports</li>
+			</ul>
+		</nav>
+
+		<!-- MAIN CONTENT -->
+		<main class="main-content">
+			<header class="top-header">
+				<div class="left-head">
+					<h1 class="page-title">Items</h1>
+
+					<div class="stat-row">
+						<div class="stat-card wide">
+							<div class="stat-label">
+								<svg class="link-out" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7" stroke="#9aa0a6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14L21 3" stroke="#9aa0a6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								Stock Value
+							</div>
+							<div class="stat-value">₹ 45,62,475</div>
+						</div>
+
+						<div class="stat-card">
+							<div class="stat-label">Low Stock</div>
+							<div class="stat-value">0</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="right-head">
+					<button class="btn reports">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 3h18v18H3z" stroke="#2b80ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						Reports
+						<span class="caret">▾</span>
+					</button>
+
+					<button class="icon-btn" title="Settings" aria-label="Settings">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					</button>
+
+					<button class="icon-btn" title="Export" aria-label="Export">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 7l4-4 4 4" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					</button>
+				</div>
+			</header>
+
+			<section class="controls-bar">
+				<div class="left-controls">
+					<div class="search-wrap">
+						<input type="text" placeholder="Search Item" class="search-input" />
+						<svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#9aa0a6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#9aa0a6" stroke-width="1.2"/></svg>
+					</div>
+
+					<div class="select-wrap">
+						<select class="select-cat" aria-label="Select Categories">
+							<option>Select Categories</option>
+							<option>All</option>
+							<option>Electronics</option>
+							<option>Stationery</option>
+						</select>
+					</div>
+
+					<button class="btn outline show-low">Show Low Stock</button>
+				</div>
+
+				<div class="right-controls">
+					<div class="bulk-actions">
+						<button class="btn outline"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7h18" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Bulk Actions <span class="gst">GST</span> <span class="caret">▾</span></button>
+					</div>
+					<button class="btn purple create-item">Create Item</button>
+				</div>
+			</section>
+
+			<section class="table-wrap" aria-label="Items list">
+				<table class="items-table" role="table">
+					<thead>
+						<tr role="row">
+							<th class="chk-col"><input type="checkbox" id="selectAll" aria-label="Select all" /></th>
+							<th>Item Name</th>
+							<th>Item Code</th>
+							<th>Stock QTY</th>
+							<th>Selling Price</th>
+							<th>Purchase Price</th>
+							<th class="action-col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="chk-col"><input type="checkbox" /></td>
+							<td class="item-name">
+								<div class="name">clg selling</div>
+								<div class="tag-row"><span class="tag">billing</span></div>
+							</td>
+							<td>-</td>
+							<td>0 <span class="unit">PCS</span></td>
+							<td>-</td>
+							<td>-</td>
+							<td class="action-col">
+								<button class="icon action"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 7h18M6 7v13h12V7" stroke="#2f373f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+							</td>
+						</tr>
+
+						<tr class="striped">
+							<td class="chk-col"><input type="checkbox" /></td>
+							<td class="item-name">
+								<div class="name">e way bill</div>
+								<div class="tag-row"><span class="tag small">billing</span></div>
+							</td>
+							<td>-</td>
+							<td>45 <span class="unit">PCS</span></td>
+							<td>₹ 53.1</td>
+							<td>-</td>
+							<td class="action-col">
+								<button class="icon action"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="14" rx="2" stroke="#2f373f" stroke-width="1.2"/></svg></button>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="chk-col"><input type="checkbox" /></td>
+							<td class="item-name"><div class="name">ELLASTIC</div></td>
+							<td>-</td>
+							<td>5 <span class="unit">MTR</span></td>
+							<td>-</td>
+							<td>₹ 1,500</td>
+							<td class="action-col"><button class="icon action"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 7h18M6 7v13h12V7" stroke="#2f373f" stroke-width="1.2"/></svg></button></td>
+						</tr>
+
+						<tr class="striped">
+							<td class="chk-col"><input type="checkbox" /></td>
+							<td class="item-name"><div class="name">kids slevless L size</div></td>
+							<td>-</td>
+							<td>1,100 <span class="unit">PCS</span></td>
+							<td>₹ 28</td>
+							<td>-</td>
+							<td class="action-col"><button class="icon action"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="14" rx="2" stroke="#2f373f" stroke-width="1.2"/></svg></button></td>
+						</tr>
+
+						<!-- ...existing rows... -->
+					</tbody>
+				</table>
+			</section>
+		</main>
+
+		<!-- RIGHT FLOATING MENU -->
+		<aside class="right-floating" aria-hidden="false">
+			<button class="help-circle" title="Help">
+				<span class="q">?</span>
+			</button>
+
+			<div class="right-bottom">
+				<button class="pending-actions">
+					<span class="dot">1</span>
+					Pending Actions
+				</button>
+			</div>
+		</aside>
+	</div>
+
+	<script src="../assets/js/items.js"></script>
+</body>
+</html>

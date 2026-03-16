@@ -1,0 +1,11 @@
+.bills-page{padding:20px}
+.bills-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.bills-summary{display:flex;gap:18px}
+.summary-item{background:#f9fafb;padding:12px;border-radius:6px;border:1px solid #e6eef8;text-align:center;min-width:150px}
+.summary-item .label{font-weight:600;color:#374151;margin-bottom:6px}
+.summary-item .value{font-size:18px;color:#0b8a3d;font-weight:700}
+.bills-list{background:white;padding:12px;border-radius:6px;border:1px solid #e6eef8}
+.bills-table{width:100%;border-collapse:collapse}
+.bills-table th,.bills-table td{padding:10px;border-bottom:1px solid #eef2f7}
+.text-right{text-align:right}
+.actions a{color:#2563eb;text-decoration:none}
