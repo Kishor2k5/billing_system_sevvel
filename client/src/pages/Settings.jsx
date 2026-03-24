@@ -180,27 +180,15 @@ const Settings = () => {
               </div>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>PAN</label>
-                <input
-                  type="text"
-                  name="pan"
-                  value={settings.pan}
-                  onChange={handleChange}
-                  placeholder="Enter PAN"
-                />
-              </div>
-              <div className="form-group">
-                <label>Account Holder Name</label>
-                <input
-                  type="text"
-                  name="accountHolderName"
-                  value={settings.accountHolderName}
-                  onChange={handleChange}
-                  placeholder="Enter account holder name"
-                />
-              </div>
+            <div className="form-group full-width">
+              <label>PAN</label>
+              <input
+                type="text"
+                name="pan"
+                value={settings.pan}
+                onChange={handleChange}
+                placeholder="Enter PAN"
+              />
             </div>
 
             <div className="form-group full-width">
@@ -222,6 +210,17 @@ const Settings = () => {
             <h2>🏦 Bank Information</h2>
           </div>
           <form className="settings-form">
+            <div className="form-group full-width">
+              <label>Account Holder Name</label>
+              <input
+                type="text"
+                name="accountHolderName"
+                value={settings.accountHolderName}
+                onChange={handleChange}
+                placeholder="Enter account holder name"
+              />
+            </div>
+
             <div className="form-row">
               <div className="form-group">
                 <label>Bank Name</label>
@@ -245,18 +244,17 @@ const Settings = () => {
               </div>
             </div>
 
-            <div className="form-group">
-              <label>IFSC Code</label>
-              <input
-                type="text"
-                name="ifscCode"
-                value={settings.ifscCode}
-                onChange={handleChange}
-                placeholder="Enter IFSC code"
-              />
-            </div>
-
             <div className="form-row">
+              <div className="form-group">
+                <label>IFSC Code</label>
+                <input
+                  type="text"
+                  name="ifscCode"
+                  value={settings.ifscCode}
+                  onChange={handleChange}
+                  placeholder="Enter IFSC code"
+                />
+              </div>
               <div className="form-group">
                 <label>Branch Name</label>
                 <input

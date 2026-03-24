@@ -382,6 +382,30 @@ const stockTransactionSchema = new mongoose.Schema(
 );
 const StockTransaction = mongoose.models.StockTransaction || mongoose.model('StockTransaction', stockTransactionSchema);
 
+const settingsSchema = new mongoose.Schema(
+  {
+    companyName: { type: String, default: 'SEVVEL GARMENTS' },
+    companyPhone: { type: String, default: '8667488669' },
+    companyEmail: { type: String, default: 'info@sevvel.com' },
+    companyAddress: { type: String, default: '8/A Suppanur Papampalayam Post, Tiruppur, Tamil Nadu - 638752' },
+    taxId: { type: String, default: '33GNIPK9601N1ZJ' },
+    pan: { type: String, default: 'GNIPK9601N' },
+    bankName: { type: String, default: 'Bank Name' },
+    accountNumber: { type: String, default: '123456789' },
+    ifscCode: { type: String, default: 'IFSC CODE' },
+    branchName: { type: String, default: 'Branch Name' },
+    accountHolderName: { type: String, default: 'Account Holder Name' },
+    invoiceLogo: { type: String, default: '' },
+    notifications: { type: Boolean, default: true },
+    darkMode: { type: Boolean, default: false },
+    defaultCurrency: { type: String, default: 'INR' },
+    decimalPlaces: { type: Number, default: 2 }
+  },
+  { timestamps: true }
+);
+
+const Settings = mongoose.models.Settings || mongoose.model('Settings', settingsSchema);
+
 // Purchase invoice related schemas and model
 const purchaseItemSchema = new mongoose.Schema(
   {
@@ -1339,16 +1363,20 @@ app.get('/api/bills/:invoiceNumber/pdf', async (req, res) => {
     console.log('PDF Generation - Items:', JSON.stringify(bill.items, null, 2));
     console.log('PDF Generation - GrandTotal:', bill.grandTotal);
 
+    // Check if item exists (placeholder removed)
+    
+    const settings = await Settings.findOne() || {};
+
     // Read HTML template
     const templatePath = path.join(__dirname, '..', '..', 'client', 'print-invoice', 'invoice-template.html');
     let html = await fs.readFile(templatePath, 'utf8');
 
     // Company details
-    html = html.replace(/%%COMPANY_NAME%%/g, 'SEVVEL GARMENTS');
-    html = html.replace(/%%COMPANY_ADDRESS%%/g, '8/A Suppanur Papampalayam Post, Tiruppur, Tamil Nadu - 638752');
-    html = html.replace(/%%COMPANY_MOBILE%%/g, '9600818418');
-    html = html.replace(/%%COMPANY_GST%%/g, '33GNIPK9601N1ZJ');
-    html = html.replace(/%%COMPANY_PAN%%/g, 'GNIPK9601N');
+    html = html.replace(/%%COMPANY_NAME%%/g, escapeHtml(settings.companyName || 'SEVVEL GARMENTS'));
+    html = html.replace(/%%COMPANY_ADDRESS%%/g, escapeHtml(settings.companyAddress || '8/A Suppanur Papampalayam Post, Tiruppur, Tamil Nadu - 638752'));
+    html = html.replace(/%%COMPANY_MOBILE%%/g, escapeHtml(settings.companyPhone || '8667488669'));
+    html = html.replace(/%%COMPANY_GST%%/g, escapeHtml(settings.taxId || '33GNIPK9601N1ZJ'));
+    html = html.replace(/%%COMPANY_PAN%%/g, escapeHtml(settings.pan || 'GNIPK9601N'));
 
     // Invoice metadata
     html = html.replace(/%%INVOICE_NUMBER%%/g, bill.invoiceNumber || '');
@@ -1427,11 +1455,11 @@ app.get('/api/bills/:invoiceNumber/pdf', async (req, res) => {
     html = html.replace(/%%AMOUNT_IN_WORDS%%/g, amountWords);
 
     // Bank details
-    html = html.replace(/%%BANK_ACCOUNT_NAME%%/g, 'Account Holder Name');
-    html = html.replace(/%%BANK_ACCOUNT_NUMBER%%/g, '123456789');
-    html = html.replace(/%%BANK_IFSC%%/g, 'IFSC CODE');
-    html = html.replace(/%%BANK_NAME%%/g, 'Bank Name');
-    html = html.replace(/%%BANK_BRANCH%%/g, 'Branch Name');
+    html = html.replace(/%%BANK_ACCOUNT_NAME%%/g, escapeHtml(settings.accountHolderName || 'Account Holder Name'));
+    html = html.replace(/%%BANK_ACCOUNT_NUMBER%%/g, escapeHtml(settings.accountNumber || '123456789'));
+    html = html.replace(/%%BANK_IFSC%%/g, escapeHtml(settings.ifscCode || 'IFSC CODE'));
+    html = html.replace(/%%BANK_NAME%%/g, escapeHtml(settings.bankName || 'Bank Name'));
+    html = html.replace(/%%BANK_BRANCH%%/g, escapeHtml(settings.branchName || 'Branch Name'));
 
     // Lazily import puppeteer
     let puppeteerModule;
@@ -1472,16 +1500,25 @@ app.post('/api/bills/:invoiceNumber/generate-pdf', async (req, res) => {
 
     if (!bill) return res.status(404).json({ message: 'Bill not found' });
 
+    const settings = await Settings.findOne() || {};
+
     // Read HTML template
     const templatePath = path.join(__dirname, '..', '..', 'client', 'print-invoice', 'invoice-template.html');
     let html = await fs.readFile(templatePath, 'utf8');
 
     // Replace company placeholders
-    html = html.replace(/%%COMPANY_NAME%%/g, 'SEVVEL GARMENTS');
-    html = html.replace(/%%COMPANY_ADDRESS%%/g, '8/A Suppanur Papampalayam Post, Tiruppur, Tamil Nadu - 638752');
-    html = html.replace(/%%COMPANY_MOBILE%%/g, '9600818418');
-    html = html.replace(/%%COMPANY_GST%%/g, '33GNIPK9601N1ZJ');
-    html = html.replace(/%%COMPANY_PAN%%/g, 'GNIPK9601N');
+    html = html.replace(/%%COMPANY_NAME%%/g, escapeHtml(settings.companyName || 'SEVVEL GARMENTS'));
+    html = html.replace(/%%COMPANY_ADDRESS%%/g, escapeHtml(settings.companyAddress || '8/A Suppanur Papampalayam Post, Tiruppur, Tamil Nadu - 638752'));
+    html = html.replace(/%%COMPANY_MOBILE%%/g, escapeHtml(settings.companyPhone || '8667488669'));
+    html = html.replace(/%%COMPANY_GST%%/g, escapeHtml(settings.taxId || '33GNIPK9601N1ZJ'));
+    html = html.replace(/%%COMPANY_PAN%%/g, escapeHtml(settings.pan || 'GNIPK9601N'));
+    
+    // Bank details
+    html = html.replace(/%%BANK_ACCOUNT_NAME%%/g, escapeHtml(settings.accountHolderName || 'Account Holder Name'));
+    html = html.replace(/%%BANK_ACCOUNT_NUMBER%%/g, escapeHtml(settings.accountNumber || '123456789'));
+    html = html.replace(/%%BANK_IFSC%%/g, escapeHtml(settings.ifscCode || 'IFSC CODE'));
+    html = html.replace(/%%BANK_NAME%%/g, escapeHtml(settings.bankName || 'Bank Name'));
+    html = html.replace(/%%BANK_BRANCH%%/g, escapeHtml(settings.branchName || 'Branch Name'));
 
     // Replace invoice meta
     html = html.replace(/%%INVOICE_NUMBER%%/g, bill.invoiceNumber || '');
@@ -1888,6 +1925,37 @@ app.post('/api/items/bulk-delete', async (req, res) => {
     return res.json({ message: 'Items deleted successfully' });
   } catch (error) {
     console.error('Bulk delete items error', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// ================== SETTINGS ROUTES ==================
+app.get('/api/settings', async (req, res) => {
+  try {
+    let settings = await Settings.findOne({});
+    if (!settings) {
+      settings = await Settings.create({});
+    }
+    return res.json({ settings });
+  } catch (error) {
+    console.error('Fetch settings error:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.put('/api/settings', async (req, res) => {
+  try {
+    const payload = req.body;
+    let settings = await Settings.findOne({});
+    if (!settings) {
+      settings = new Settings(payload);
+    } else {
+      Object.assign(settings, payload);
+    }
+    await settings.save();
+    return res.json({ settings, message: 'Settings saved successfully' });
+  } catch (error) {
+    console.error('Update settings error:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
