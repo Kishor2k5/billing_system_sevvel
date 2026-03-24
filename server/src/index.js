@@ -1863,6 +1863,35 @@ app.get('/api/items/:itemId/stock-transactions', async (req, res) => {
   }
 });
 
+app.delete('/api/items/:itemId', async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const item = await Item.findOneAndDelete({ itemId });
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+    return res.json({ message: 'Item deleted successfully' });
+  } catch (error) {
+    console.error('Delete item error', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.post('/api/items/bulk-delete', async (req, res) => {
+  try {
+    const { itemIds } = req.body;
+    if (!Array.isArray(itemIds) || itemIds.length === 0) {
+      return res.status(400).json({ message: 'Item IDs array is required' });
+    }
+    
+    await Item.deleteMany({ itemId: { $in: itemIds } });
+    return res.json({ message: 'Items deleted successfully' });
+  } catch (error) {
+    console.error('Bulk delete items error', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 // ================== UNIFIED PARTIES API ROUTES (Buyers + Sellers) ==================
 
 // Get all parties (buyers + sellers)

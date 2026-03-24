@@ -218,7 +218,7 @@ function Items() {
     try {
       const { data } = await API.delete(`/items/${itemId}`);
       setItems((prev) => prev.filter((it) => (it.itemId ?? it.id ?? it._id) !== itemId));
-      showToast('Item moved to recycle bin', 'success');
+      showToast('Item deleted successfully', 'success');
       setDeleteConfirm(null);
     } catch (err) {
       console.error('Failed to delete item', err);
@@ -233,7 +233,7 @@ function Items() {
       const { data } = await API.post('/items/bulk-delete', { itemIds: selectedIds });
       setItems((prev) => prev.filter((it) => !selectedIds.includes(it.itemId ?? it.id ?? it._id)));
       setSelectedIds([]);
-      showToast(`${selectedIds.length} items moved to recycle bin`, 'success');
+      showToast(`${selectedIds.length} items deleted successfully`, 'success');
     } catch (err) {
       console.error('Failed to bulk delete items', err);
       showToast(err.message, 'error');
@@ -618,8 +618,8 @@ function Items() {
             </div>
             <p>
               {deleteConfirm.type === 'bulk'
-                ? `Delete ${selectedIds.length} items? They will be moved to recycle bin.`
-                : 'Delete this item? It will be moved to recycle bin.'}
+                ? `Delete ${selectedIds.length} items permanently?`
+                : 'Delete this item permanently?'}
             </p>
             <div className="modal-actions">
               <button
