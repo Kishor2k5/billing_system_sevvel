@@ -894,9 +894,9 @@
   overflow-x: auto;
 }
 
-.stock-history-table .table-header {
+.stock-history-table .history-header {
   display: grid;
-  grid-template-columns: 100px 100px 70px 70px 70px 120px 100px;
+  grid-template-columns: 110px 140px 80px 80px 80px 1fr 1fr;
   gap: 1rem;
   padding: 1rem;
   background: #f7fafc;
@@ -907,14 +907,14 @@
   border-radius: 6px;
 }
 
-.stock-history-table .table-body {
+.stock-history-table .history-body {
   display: flex;
   flex-direction: column;
 }
 
-.stock-history-table .table-row {
+.stock-history-table .history-row {
   display: grid;
-  grid-template-columns: 100px 100px 70px 70px 70px 120px 100px;
+  grid-template-columns: 110px 140px 80px 80px 80px 1fr 1fr;
   gap: 1rem;
   padding: 1rem;
   border-bottom: 1px solid #e2e8f0;
@@ -922,7 +922,7 @@
   font-size: 0.9rem;
 }
 
-.stock-history-table .table-row:hover {
+.stock-history-table .history-row:hover {
   background-color: #f7fafc;
 }
 

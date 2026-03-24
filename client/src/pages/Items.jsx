@@ -73,37 +73,69 @@ const StockHistoryModal = ({ open, item, onClose }) => {
     }
   };
 
+  const downloadHistoryExcel = () => {
+    if (!transactions.length) return;
+    const csvHeader = ['Date', 'Type', 'Qty In', 'Qty Out', 'Balance', 'Reference', 'Batch'].join(',');
+    const csvBody = transactions.map(tx => {
+      return [
+        `"${formatDate(tx.transactionDate)}"`,
+        `"${tx.transactionType}"`,
+        tx.quantityIn > 0 ? '+' + tx.quantityIn : '0',
+        tx.quantityOut > 0 ? '-' + tx.quantityOut : '0',
+        tx.balance,
+        `"${tx.referenceType || '-'}"`,
+        `"${tx.manufacturingBatch || '-'}"`
+      ].join(',');
+    }).join('\n');
+
+    const csvContent = `${csvHeader}\n${csvBody}`;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `Stock_History_${item?.name?.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (!open) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" style={{ maxWidth: '800px' }} onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Stock History - {item?.name}</h2>
           <button className="close-btn" onClick={onClose}>X</button>
         </div>
 
+        <div style={{ padding: '1rem 1.5rem 0', display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="btn-secondary" onClick={downloadHistoryExcel} disabled={isLoading || transactions.length === 0}>
+            Download Excel
+          </button>
+        </div>
+
         <div className="stock-history-table">
-          <div className="table-header">
+          <div className="history-header">
             <div className="cell">Date</div>
             <div className="cell">Type</div>
-            <div className="cell">Qty In</div>
-            <div className="cell">Qty Out</div>
-            <div className="cell">Balance</div>
+            <div className="cell" style={{ textAlign: 'right' }}>Qty In</div>
+            <div className="cell" style={{ textAlign: 'right' }}>Qty Out</div>
+            <div className="cell" style={{ textAlign: 'right' }}>Balance</div>
             <div className="cell">Reference</div>
             <div className="cell">Batch</div>
           </div>
 
-          <div className="table-body">
+          <div className="history-body">
             {isLoading && <div className="table-loading">Loading...</div>}
             {!isLoading && transactions.length === 0 && <div className="table-empty">No transactions found</div>}
             {!isLoading && transactions.map((tx) => (
-              <div key={tx.id} className="table-row">
+              <div key={tx.id} className="history-row">
                 <div className="cell">{formatDate(tx.transactionDate)}</div>
                 <div className="cell">{tx.transactionType}</div>
-                <div className="cell">{tx.quantityIn > 0 ? '+' + tx.quantityIn : '-'}</div>
-                <div className="cell">{tx.quantityOut > 0 ? '-' + tx.quantityOut : '-'}</div>
-                <div className="cell">{tx.balance}</div>
+                <div className="cell" style={{ textAlign: 'right', color: '#38a169', fontWeight: 'bold' }}>{tx.quantityIn > 0 ? '+' + tx.quantityIn : '-'}</div>
+                <div className="cell" style={{ textAlign: 'right', color: '#e53e3e', fontWeight: 'bold' }}>{tx.quantityOut > 0 ? '-' + tx.quantityOut : '-'}</div>
+                <div className="cell" style={{ textAlign: 'right', fontWeight: 'bold' }}>{tx.balance}</div>
                 <div className="cell">{tx.referenceType || '-'}</div>
                 <div className="cell">{tx.manufacturingBatch || '-'}</div>
               </div>
