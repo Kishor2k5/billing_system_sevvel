@@ -352,14 +352,7 @@ function Items() {
       <header className="items-header">
         <h1>Items</h1>
         <p>Manage and review your inventory catalogue</p>
-        <button
-          className="btn-recycle-bin"
-          onClick={() => navigate('/items/recycle-bin')}
-          title="View deleted items"
-        >
-          <img src={deleteIcon} alt="Recycle Bin" className="btn-icon" />
-          Recycle Bin
-        </button>
+
       </header>
 
       {/* Toast Notification */}

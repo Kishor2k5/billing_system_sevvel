@@ -166,7 +166,6 @@ function Home() {
         <article className="transactions-card">
           <header>
             <h2>Latest Transactions</h2>
-            <button type="button">See All Transactions</button>
           </header>
           <div className="table-wrapper">
             <table>
