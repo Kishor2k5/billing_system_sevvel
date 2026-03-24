@@ -365,6 +365,23 @@ const itemSchema = new mongoose.Schema(
 
 const Item = mongoose.models.Item || mongoose.model('Item', itemSchema);
 
+const stockTransactionSchema = new mongoose.Schema(
+  {
+    itemId: { type: String, required: true },
+    transactionDate: { type: Date, default: Date.now },
+    transactionType: { type: String, required: true },
+    quantityIn: { type: Number, default: 0 },
+    quantityOut: { type: Number, default: 0 },
+    balance: { type: Number, required: true },
+    referenceType: { type: String },
+    referenceId: { type: String },
+    manufacturingBatch: { type: String },
+    notes: { type: String }
+  },
+  { timestamps: true }
+);
+const StockTransaction = mongoose.models.StockTransaction || mongoose.model('StockTransaction', stockTransactionSchema);
+
 // Purchase invoice related schemas and model
 const purchaseItemSchema = new mongoose.Schema(
   {
@@ -1729,6 +1746,17 @@ app.post('/api/items', async (req, res) => {
       unit: unit?.trim() || 'PCS',
     });
 
+    if (item.stock > 0) {
+      await StockTransaction.create({
+        itemId: item.itemId,
+        transactionType: 'Opening Stock',
+        quantityIn: item.stock,
+        quantityOut: 0,
+        balance: item.stock,
+        referenceType: 'Opening Stock'
+      });
+    }
+
     return res.status(201).json({
       item: {
         itemId: item.itemId,
@@ -1773,9 +1801,27 @@ app.patch('/api/items/:itemId', async (req, res) => {
       return res.status(400).json({ message: 'No updatable fields provided' });
     }
 
+    const oldItem = await Item.findOne({ itemId });
+    if (!oldItem) return res.status(404).json({ message: 'Item not found' });
+
     const item = await Item.findOneAndUpdate({ itemId }, update, { new: true });
 
-    if (!item) return res.status(404).json({ message: 'Item not found' });
+    if (payload.stock !== undefined) {
+      const oldStock = Number(oldItem.stock) || 0;
+      const newStock = Number(item.stock) || 0;
+      if (oldStock !== newStock) {
+        const difference = newStock - oldStock;
+        await StockTransaction.create({
+          itemId: item.itemId,
+          transactionType: 'Manual Adjustment',
+          quantityIn: difference > 0 ? difference : 0,
+          quantityOut: difference < 0 ? Math.abs(difference) : 0,
+          balance: newStock,
+          referenceType: 'Adjustment',
+          notes: 'Updated via edit form'
+        });
+      }
+    }
 
     return res.json({
       item: {
@@ -1793,6 +1839,26 @@ app.patch('/api/items/:itemId', async (req, res) => {
     });
   } catch (error) {
     console.error('Update item error', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/api/items/:itemId/stock-transactions', async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    
+    // Check if item exists
+    const item = await Item.findOne({ itemId });
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    const transactions = await StockTransaction.find({ itemId })
+      .sort({ transactionDate: -1, createdAt: -1 });
+
+    return res.json({ transactions });
+  } catch (error) {
+    console.error('Fetch stock transactions error:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
